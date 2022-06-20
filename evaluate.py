@@ -4,10 +4,10 @@ import torch
 import pandas as pd
 import numpy as np
 import torchmetrics
-from .train import BST
+from .train import Model
 from .constants import EMPTY_EMBEDDING, CATEGORIES
 
-model = BST.load_from_checkpoint(checkpoint_path=sys.argv[1])
+model = Model.load_from_checkpoint(checkpoint_path=sys.argv[1])
 model.test = True
 
 
@@ -95,7 +95,7 @@ for num, user_id in enumerate(test.user_id.unique().tolist()):
         for idx_, k in enumerate(ks):
             if len(target) > k*2:
                 ndcg = get_ndcg(target.tolist(), out.long().flatten().detach().tolist(), p=k)
-                prec, rec = BST.precision_recall_at_k(out.flatten(), target, k=k)
+                prec, rec = Model.precision_recall_at_k(out.flatten(), target, k=k)
                 precisions[idx_] += prec
                 recalls[idx_] += rec
                 ndcgs[idx_] += ndcg
